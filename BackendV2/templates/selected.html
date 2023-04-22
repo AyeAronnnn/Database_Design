@@ -43,6 +43,8 @@
     <section class="submit-review">
       <h2>Submit a review</h2>
       <form method="POST" action="{{ url_for('submit_review', item_id=item[0]) }}">
+        <label for="username">Username for Verification:</label>
+        <input type="username" id="title" name="username" required>
         <label for="rating">Rating:</label>
         <select id="rating" name="rating" required>
           <option value="Excellent">Excellent</option>
@@ -55,6 +57,18 @@
         <textarea id="description" name="description" required></textarea>
         <br>
         <button type="submit" class="submit-btn">Submit Review</button>
+        <div class="error-messages">
+          <div class="messages">
+            {% with messages = get_flashed_messages(with_categories=true,
+            category_filter=["now"]) %} {% if messages %}
+            <ul class="flashes">
+              {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+          </div>
+        </div>
       </form>
       <a href="{{ url_for('searchbar') }}" class="search-bar-btn">Back to Search</a>
     </section>

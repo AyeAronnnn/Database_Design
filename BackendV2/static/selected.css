@@ -87,3 +87,31 @@ body {
     margin-top: 2rem;
   }
   
+  .error-messages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.error-messages .messages {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    padding: 1em;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    margin: 1em 0;
+    text-align: center;
+    max-width: 600px;
+}
+
+.error-messages .flashes {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.error-messages .flashes li {
+    margin-bottom: 0.5em;
+}
