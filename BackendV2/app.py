@@ -208,7 +208,6 @@ def item_detail(item_id):
 @app.route('/item/<int:item_id>/submit_review', methods=['GET','POST'])
 def submit_review(item_id):
     if request.method == 'POST':
-        print(request)
         username = request.form['username']
         rating = request.form['rating']
         description = request.form['description']
@@ -216,6 +215,12 @@ def submit_review(item_id):
         yesterday = today - timedelta(days=1)
         with sqlite3.connect(db_path) as conn:
             c = conn.cursor()
+            # Retrieve the username associated with the item_id
+            c.execute('SELECT username FROM items WHERE id = ?', (item_id,))
+            item_username = c.fetchone()[0]
+            if username == item_username:
+                flash('You cannot review your own product', app.config['FLASH_CATEGORY'])
+                return redirect(url_for('item_detail', item_id=item_id))
             c.execute('SELECT COUNT(*) FROM reviews WHERE username = ? AND date BETWEEN ? AND ?', (username, yesterday, today))
             count = c.fetchone()[0]
             if count < 3:
@@ -226,6 +231,7 @@ def submit_review(item_id):
             else: 
                 flash('You have reached the maximum limit of 3 reviews in a day', app.config['FLASH_CATEGORY'])
             return redirect(url_for('item_detail', item_id=item_id))
+    return render_template('selected.html')
     
 
 @app.route('/clear-flash', methods=['POST'])
